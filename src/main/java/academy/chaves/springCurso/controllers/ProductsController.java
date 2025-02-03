@@ -42,5 +42,19 @@ public class ProductsController {
         return ResponseEntity.status(HttpStatus.OK).body(productRepository.findAll());
     }
 
+    // Usamos object quando pode haver mais de um retorno
+    //Para pegar o ID é necessário o path variable
+    @GetMapping("/products/{id}")
+    public ResponseEntity<Object> getIdProducts(@PathVariable(value="id") UUID id){
+
+        Optional<ProductModel> product0 = productRepository.findById(id);
+
+        if(product0.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(product0.get());
+
+    }
 
 }
