@@ -13,18 +13,18 @@ public class ProductModel implements Serializable {
     // Evita erros de incompatibilidade na serialização de objetos
     private static final long serialVersionUID = 1L;
 
-    @Id
-//    @Id faz com que a variável idProduct sejá reconhecida como chave primária da entidade no banco de dados
-    @GeneratedValue(strategy = GenerationType.AUTO)
-//    E o GeneratedValue, gerará um valor aleatório para esse ID
+    //    @Id faz com que a variável idProduct sejá reconhecida como chave primária da entidade no banco de dados
+    //    E o GeneratedValue, gerará um valor aleatório para esse ID
 
-//    UUID são identificadores distribuidos, evita conflito, são universais.
+    //    UUID são identificadores distribuidos, evita conflito, são universais.
+    //    Id/GeneraredValue, essas duas anotações permitem identificar esses identificadores
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+
     private UUID idProduct;
     private String name;
     private BigDecimal value;
-
-//    Id/GeneraredValue, essas duas anotações permitem identificar esses identificadores
-
 
     public UUID getIdProduct() {
         return idProduct;
