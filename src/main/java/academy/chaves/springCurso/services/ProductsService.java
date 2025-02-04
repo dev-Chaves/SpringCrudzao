@@ -5,6 +5,7 @@ import academy.chaves.springCurso.models.ProductModel;
 import academy.chaves.springCurso.repositories.ProductRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -52,5 +53,22 @@ public class ProductsService {
         return ResponseEntity.status(HttpStatus.CREATED).body(productRepository.save(productModel));
 
     }
+
+    public ResponseEntity<Object> deleteProduct (@PathVariable(value = "id") UUID id){
+
+        Optional<ProductModel> product0 = productRepository.findById(id);
+
+        if (product0.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("BAD REQUEST");
+        }
+
+        productRepository.delete(product0.get());
+
+        return ResponseEntity.status(HttpStatus.OK).body("Product Deleted");
+
+    }
+
+
+
 
 }
