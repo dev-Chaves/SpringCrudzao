@@ -1,23 +1,17 @@
 package academy.chaves.springCurso.models;
 
 import jakarta.persistence.*;
+import org.springframework.hateoas.RepresentationModel;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
 @Table(name = "TB_PRODUCTS")
-public class ProductModel implements Serializable {
+public class ProductModel extends RepresentationModel<ProductModel> implements Serializable {
 
-    // Número de Controle de versão de cada uma dessas classes quando for inicialziada;
-    // Evita erros de incompatibilidade na serialização de objetos
     private static final long serialVersionUID = 1L;
-
-    //    @Id faz com que a variável idProduct sejá reconhecida como chave primária da entidade no banco de dados
-    //    E o GeneratedValue, gerará um valor aleatório para esse ID
-
-    //    UUID são identificadores distribuidos, evita conflito, são universais.
-    //    Id/GeneraredValue, essas duas anotações permitem identificar esses identificadores
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -1,16 +1,19 @@
 package academy.chaves.springCurso.services;
 
+import academy.chaves.springCurso.controllers.ProductsController;
 import academy.chaves.springCurso.dtos.ProductRecordDto;
 import academy.chaves.springCurso.models.ProductModel;
 import academy.chaves.springCurso.repositories.ProductRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +30,17 @@ public class ProductsService {
 
     public ResponseEntity<List<ProductModel>> listProducts(){
 
-        return ResponseEntity.status(HttpStatus.OK).body(productRepository.findAll());
+        List<ProductModel> productList = productRepository.findAll();
+
+        if(!productList.isEmpty()){
+            for (ProductModel product: productList){
+                UUID id = product.getIdProduct();
+
+                product.add(linkTo(methodOn(ProductsController.class).findProductById(id)).withSelfRel());
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(productList);
     }
 
     public ResponseEntity<Object> listById(@PathVariable(value = "id") UUID id){
