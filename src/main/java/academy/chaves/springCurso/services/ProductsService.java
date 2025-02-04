@@ -43,6 +43,14 @@ public class ProductsService {
 
     }
 
+    public ResponseEntity<ProductModel> saveProduct(@RequestBody@Valid ProductRecordDto productRecordDto){
 
+        var productModel = new ProductModel();
+
+        BeanUtils.copyProperties(productRecordDto, productModel);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(productRepository.save(productModel));
+
+    }
 
 }
