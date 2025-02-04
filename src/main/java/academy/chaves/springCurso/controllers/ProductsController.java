@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,28 +27,17 @@ public class ProductsController {
         this.productsService = productsService;
     }
 
-
     @PostMapping("/products")
-    public ResponseEntity<ProductModel> saveProduct(@RequestBody @Valid ProductRecordDto productRecordDto){
+    public ResponseEntity<ProductModel> saveProduct (@RequestBody @Valid ProductRecordDto productRecordDto){
 
-        var productModel = new ProductModel();
+        return productsService.saveProduct(productRecordDto);
 
-        BeanUtils.copyProperties(productRecordDto, productModel);
-
-
-        return ResponseEntity.status(HttpStatus.CREATED
-        ).body(productRepository.save(productModel));
     }
 
     @GetMapping("products")
     public ResponseEntity<List<ProductModel>> listAllProducts(){
         return productsService.listProducts();
     }
-
-//    @GetMapping("/products")
-//    public ResponseEntity<List<ProductModel>> getAllProducts(){
-//        return ResponseEntity.status(HttpStatus.OK).body(productRepository.findAll());
-//    }
 
     // Usamos object quando pode haver mais de um retorno
     //Para pegar o ID é necessário o path variable
@@ -59,20 +47,6 @@ public class ProductsController {
 
         return productsService.listById(id);
     }
-
-
-//    @GetMapping("/products/{id}")
-//    public ResponseEntity<Object> getIdProducts(@PathVariable(value="id") UUID id){
-//
-//        Optional<ProductModel> product0 = productRepository.findById(id);
-//
-//        if(product0.isEmpty()){
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
-//        }
-//
-//        return ResponseEntity.status(HttpStatus.OK).body(product0.get());
-//
-//    }
 
     @PutMapping("products/{id}")
     public ResponseEntity<Object> updateUpdate(@PathVariable(value="id") UUID id, @RequestBody @Valid ProductRecordDto productRecordDto){
@@ -104,6 +78,5 @@ public class ProductsController {
         return ResponseEntity.status(HttpStatus.OK).body("Product Deleted succesfully.");
 
     }
-
 
 }
